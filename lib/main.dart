@@ -271,6 +271,9 @@ class MyApp extends StatelessWidget {
         '/page5': (context) => FifthPage(),
         '/page6': (context) => SixthPage(),
         '/dashboard': (context) => DashboardPage(),
+        '/bookingScreen': (context) => BookingConsultationScreen(),
+        '/pageIcad1': (context) => PageIcad1(),
+        '/pageIcad2': (context) => PageIcad2(),
       },
     );
   }
@@ -285,7 +288,7 @@ class MyHomePage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/bg.png'),
+                image: AssetImage('assets/bg1_2.jpeg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -317,7 +320,7 @@ class SecondPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/bg2.png'),
+                image: AssetImage('assets/bg2_2.jpeg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -375,7 +378,7 @@ class _ThirdPageState extends State<ThirdPage> {
             Padding(
               padding: const EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Image.asset(
-                'assets/logo.png',
+                'assets/logo2.png',
                 width: 150,
                 height: 150,
               ),
@@ -407,7 +410,8 @@ class _ThirdPageState extends State<ThirdPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -460,9 +464,11 @@ class _ThirdPageState extends State<ThirdPage> {
                         ElevatedButton(
                           onPressed: _submitForm,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.blue),
                           ),
-                          child: Text('Start', style: TextStyle(color: Colors.white)),
+                          child: Text('Start',
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
@@ -519,14 +525,19 @@ class _FourthPageState extends State<FourthPage> {
       // Send data to backend
       try {
         final response = await http.post(
-          Uri.parse('http://127.0.0.1:8001/register/'),
+          Uri.parse('http://nezha.chandrawisesa.com:8000/register/'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(formData),
         );
 
         if (response.statusCode == 200) {
-          // If the server returns an OK response, navigate to /page5
-          Navigator.pushNamed(context, '/page5');
+          // If the server returns an OK response, extract the id from response body
+          var responseBody = json.decode(response.body);
+          String userId = responseBody[
+              'id']; // Adjust 'id' to match your response structure
+
+          // Navigate to Page5 and pass userId as a parameter
+          Navigator.pushNamed(context, '/page5', arguments: {'userId': userId});
         } else {
           // If the server did not return an OK response, handle the error
           print('Failed to register: ${response.body}');
@@ -542,6 +553,7 @@ class _FourthPageState extends State<FourthPage> {
       }
     }
   }
+
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -572,7 +584,7 @@ class _FourthPageState extends State<FourthPage> {
             Padding(
               padding: const EdgeInsets.only(top: 40.0, bottom: 20.0),
               child: Image.asset(
-                'assets/logo.png',
+                'assets/logo2.png',
                 width: 150,
                 height: 150,
               ),
@@ -604,7 +616,8 @@ class _FourthPageState extends State<FourthPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -677,9 +690,12 @@ class _FourthPageState extends State<FourthPage> {
                             : ElevatedButton(
                                 onPressed: _submitForm,
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.blue),
                                 ),
-                                child: Text('Sign Up', style: TextStyle(color: Colors.white)),
+                                child: Text('Sign Up',
+                                    style: TextStyle(color: Colors.white)),
                               ),
                       ],
                     ),
@@ -729,9 +745,10 @@ class _FifthPageState extends State<FifthPage> {
       print('Berat badan: $beratBadan');
       print('Golongan darah: $golonganDarah');
 
-      Navigator.pushNamed(context, '/page1');
+      Navigator.pushNamed(context, '/dashboard');
     }
   }
+
   void _navigateToFemalePage() {
     Navigator.pushNamed(context, '/page6');
   }
@@ -767,7 +784,8 @@ class _FifthPageState extends State<FifthPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -779,16 +797,20 @@ class _FifthPageState extends State<FifthPage> {
                           // Handle male button press
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
                         ),
-                        child: Text('Male', style: TextStyle(color: Colors.white)),
+                        child:
+                            Text('Male', style: TextStyle(color: Colors.white)),
                       ),
                       ElevatedButton(
                         onPressed: _navigateToFemalePage,
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
                         ),
-                        child: Text('Female', style: TextStyle(color: Colors.black)),
+                        child: Text('Female',
+                            style: TextStyle(color: Colors.black)),
                       ),
                     ],
                   ),
@@ -857,10 +879,11 @@ class _FifthPageState extends State<FifthPage> {
                         ElevatedButton(
                           onPressed: _submitForm,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.blue),
                           ),
-                          child: Text('Submit', style: TextStyle(color: Colors.white)),
-                        
+                          child: Text('Submit',
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
@@ -903,9 +926,10 @@ class _SixthPageState extends State<SixthPage> {
       print('Berat badan: $beratBadan');
       print('Golongan darah: $golonganDarah');
 
-      Navigator.pushNamed(context, '/page1');
+      Navigator.pushNamed(context, '/dashboard');
     }
   }
+
   void _navigateToMalePage() {
     Navigator.pushNamed(context, '/page5');
   }
@@ -941,7 +965,8 @@ class _SixthPageState extends State<SixthPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -951,16 +976,20 @@ class _SixthPageState extends State<SixthPage> {
                       ElevatedButton(
                         onPressed: _navigateToMalePage,
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
                         ),
-                        child: Text('Male', style: TextStyle(color: Colors.black)),
+                        child:
+                            Text('Male', style: TextStyle(color: Colors.black)),
                       ),
                       ElevatedButton(
-                        onPressed: (){},
+                        onPressed: () {},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.blue),
                         ),
-                        child: Text('Female', style: TextStyle(color: Colors.white)),
+                        child: Text('Female',
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   ),
@@ -1029,10 +1058,11 @@ class _SixthPageState extends State<SixthPage> {
                         ElevatedButton(
                           onPressed: _submitForm,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.blue),
                           ),
-                          child: Text('Submit', style: TextStyle(color: Colors.white)),
-                        
+                          child: Text('Submit',
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
@@ -1053,8 +1083,6 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1064,27 +1092,276 @@ class _DashboardPageState extends State<DashboardPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/bg3_2.jpeg'),
-                  fit: BoxFit.cover,
-                ),
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Consult with Your Preferred Doctor',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Flexible(
+                    flex: 0,
+                    child: CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage:
+                          AssetImage('assets/logo2.png'), // Your circular logo
+                    ),
+                  ),
+                ],
               ),
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Center(
-                child: Column(
-                  children: [
-                    
-                  ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: AssetImage('assets/dr1.jpeg'),
+                  ),
+                  CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: AssetImage('assets/doctor.png'),
+                  ),
+                  CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: AssetImage('assets/doctor2.jpeg'),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Top article',
+                style: TextStyle(
+                  fontSize: 18.0,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                elevation: 3.0,
+                color: const Color.fromARGB(255, 137, 184, 223),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Mental health has a great influence',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Set text color of the title
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        'Lorem ipsum bismillah jadi orang hebat',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white, // Set text color of the content
+                        ),
+                      ),
+                      // Add more widgets as needed for your card content
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                elevation: 3.0,
+                color: const Color.fromARGB(255, 137, 184, 223),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Dont make your mental just like that',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Set text color of the title
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        'Lorem ipsum bismillah jadi orang hebat',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white, // Set text color of the content
+                        ),
+                      ),
+                      // Add more widgets as needed for your card content
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Find Your Consultation Services',
+                style: TextStyle(
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                ]
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to desired page or perform desired action
+                        },
+                        child: Image.asset(
+                          'assets/chat.jpeg',
+                          width: 60.0,
+                          height: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Chat Doctor',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to desired page or perform desired action
+                        },
+                        child: Image.asset(
+                          'assets/meet.jpeg',
+                          width: 60.0,
+                          height: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Onsite',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to desired page or perform desired action
+                        },
+                        child: Image.asset(
+                          'assets/vidcall.jpeg',
+                          width: 60.0,
+                          height: 60.0,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Video Call',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                color: Colors.grey[200],
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // Navigator.pushNamed(context, '/page2');
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/home.jpeg',
+                            width: 50.0,
+                            height: 50.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to desired page or perform desired action
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/articles.jpeg',
+                            width: 50.0,
+                            height: 50.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to desired page or perform desired action
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/message.jpeg',
+                            width: 50.0,
+                            height: 50.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to desired page or perform desired action
+                      },
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/profile.jpeg',
+                            width: 50.0,
+                            height: 50.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -1092,4 +1369,502 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
+}
+
+class BookingConsultationScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'Booking Consultation',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
+      ),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.blue,
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 30, // Reduced size
+                  backgroundImage: AssetImage(
+                      'assets/doctor.jpg'), // Replace with your image path
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Dr. Bruce Scott Hoffman, PHD',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        'Psychiatrist',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'About Doctor',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Dr. Bruce Scott Hoffman, PHD is a Clinical Professor of Psychiatry, Obstetrics, Gynecology, and Reproductive Sciences at the Icahn School of Medicine at Mount Sinai, which he first joined in 2007. He is a specialist in Psychiatry at Mount Sinai Medical Center. He also has a private practice in New York City.',
+                    style: TextStyle(
+                      fontSize: 14, // Reduced text size
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Special',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Chip(
+                    label: Text('Psychiatry'),
+                    backgroundColor: Colors.blue,
+                    labelStyle: TextStyle(color: Colors.white),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Video Call',
+                          style: TextStyle(fontSize: 12), // Smaller text
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(80, 36), // Adjust size
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8), // Adjust padding
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Chat',
+                          style: TextStyle(fontSize: 12), // Smaller text
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(80, 36), // Adjust size
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8), // Adjust padding
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Order Counseling',
+                          style: TextStyle(fontSize: 12), // Smaller text
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(120, 36), // Adjust size
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8), // Adjust padding
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Get Consultation Services with Dr. Bruce Scott Hoffman, PHD now',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Consultation Fees Starting from IDR 39,000/hour',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Consultation services can be via chat, voice call, or video call',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Get Instant Service'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PageIcad1 extends StatefulWidget {
+  @override
+  _PageIcad1State createState() => _PageIcad1State();
+}
+
+class _PageIcad1State extends State<PageIcad1> {
+  bool _isContainerVisible = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (_isContainerVisible)
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // X button
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        minimumSize: Size(30, 30),
+                        padding: EdgeInsets.zero,
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/page2');
+                      },
+                      child: Text(
+                        'X',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    // Saved Article text
+                    Text(
+                      'Saved Article',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            // Article information cards
+            _buildArticleCard(
+              'Kaki Okumura * 7 min read • 12 Oct',
+              'Get in Shape: Japanese Rule to a Healthy Diet',
+              'I’m no biohacker, but I have a profound interest in nutrition, food, and how we can optimize our health and well-being.',
+            ),
+            _buildArticleCard(
+              'Markham Heid * 5 min read • 23 Oct',
+              '3 Hobbies That Can Improve Your Memory',
+              'For thousands of years, humans have recognized that the sun plays a role in the emergence and transmission of viruses',
+            ),
+            _buildArticleCard(
+              'Dr. Christine Bradstreet * 7 min read • 20 Nov',
+              'The Science Behind Improving Your Immune System',
+              'Today i will talk about that science about your immune system that nobody ever talk about',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArticleCard(
+      String authorInfo, String title, String description) {
+    return Card(
+      color: Color.fromARGB(255, 149, 203, 224), // Light grey background color
+      margin: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              authorInfo,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              description,
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PageIcad2 extends StatefulWidget {
+  @override
+  _PageIcad2State createState() => _PageIcad2State();
+}
+
+class _PageIcad2State extends State<PageIcad2> {
+  bool _isContainerVisible = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (_isContainerVisible)
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // X button
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        minimumSize: Size(30, 30),
+                        padding: EdgeInsets.zero,
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/page2');
+                      },
+                      child: Text(
+                        'X',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                    // Saved Article text
+                    Text(
+                      'Appointment',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            Text(
+              'Upcoming',
+              style: TextStyle(
+                color: const Color.fromARGB(97, 0, 0, 0),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ), // Article information cards
+            _buildArticleCard(
+              'Dr Zwitsal',
+              'Psychiatry',
+              '26 June 2024',
+              '13.00',
+              'assets/doctor1.jpeg',
+            ),
+            _buildArticleCard(
+              'Dr. Pryangga',
+              'Psychology',
+              '15 June 2024',
+              '15.30',
+              'assets/doctor2.jpeg',
+            ),
+            Text(
+              'Past',
+              style: TextStyle(
+                color: const Color.fromARGB(97, 0, 0, 0),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ), // Article information cards
+            _buildArticleCard(
+              'Dr. Pryangga',
+              'Psychology',
+              '15 June 2024',
+              '15.30',
+              'assets/doctor2.jpeg',
+            ),
+            _buildArticleCard(
+              'Dr Zwitsal',
+              'Psychiatry',
+              '26 June 2024',
+              '13.00',
+              'assets/doctor1.jpeg',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArticleCard(String name, String profession, String dateSchedule,
+      String hourSchedule, String imagePath) {
+    return Card(
+      color: Color.fromARGB(255, 149, 203, 224), // Light grey background color
+      margin: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 5),
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        profession,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              "DATE & TIME",
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle button 1 tap
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                  ),
+                  child: Text(
+                    dateSchedule,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle button 2 tap
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blue),
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                  ),
+                  child: Text(
+                    hourSchedule,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
 }

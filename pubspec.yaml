@@ -62,10 +62,24 @@ flutter:
   uses-material-design: true
   assets:
     - assets/Batman.jpg
-    - assets/bg.png
-    - assets/bg2.png
-    - assets/logo.png
+    - assets/bg1_2.jpeg
+    - assets/bg2_2.jpeg
+    - assets/logo2.png
     - assets/bg3_2.jpeg
+    - assets/dr1.jpeg
+    - assets/dr2.jpeg
+    - assets/dr3.jpeg
+    - assets/doctor1.jpeg
+    - assets/doctor2.jpeg
+    - assets/doctor.png
+    - assets/chat.jpeg
+    - assets/meet.jpeg
+    - assets/vidcall.jpeg
+    - assets/articles.jpeg
+    - assets/home.jpeg
+    - assets/profile.jpeg
+    - assets/message.jpeg
+
   
 
   # To add assets to your application, add an assets section, like this:
